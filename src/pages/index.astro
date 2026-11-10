@@ -1,0 +1,103 @@
+---
+import { Image, getImage } from 'astro:assets';
+import Base from '~/layouts/Base.astro';
+import { getClassGroups } from '~/lib/classes';
+import { shotsForModifier } from '~/lib/shots';
+import { getShotImage } from '~/lib/images';
+import { u } from '~/lib/url';
+
+const groups = await getClassGroups();
+
+async function thumbFor(group: Awaited<ReturnType<typeof getClassGroups>>[number]) {
+  // First modifier in the group, glass subject.
+  const first = group.modifiers[0];
+  if (!first) return null;
+  const s = await shotsForModifier(first.id);
+  const shot = s.glass ?? s.apples;
+  if (!shot) return null;
+  return getShotImage(shot.data.image);
+}
+
+const groupThumbs = await Promise.all(groups.map(thumbFor));
+
+// Hero image: bare flash glass.
+const heroShot = (await shotsForModifier('bare-flash')).glass;
+const heroImage = heroShot ? getShotImage(heroShot.data.image) : null;
+---
+
+<Base title="Modifier Project" description="Every lighting modifier I own, same subject, everything else held constant." hideHeader>
+  <section style="padding-top: var(--s-5);">
+    <div style="display: flex; justify-content: space-between; align-items: baseline; gap: var(--s-4); flex-wrap: wrap; margin-bottom: var(--s-5);">
+      <h1 style="margin: 0;">Modifier Project</h1>
+      <nav class="site-nav" aria-label="Primary">
+        <a href={u('/compare')}>Compare</a>
+        <a href={u('/method')}>Method</a>
+      </nav>
+    </div>
+
+    {heroImage && (
+      <div style="margin-bottom: var(--s-5);">
+        <Image
+          src={heroImage}
+          alt="Bare flash reference: martini glass with blue liquid on black."
+          sizes="(min-width: 1200px) 1168px, 100vw"
+          widths={[640, 1000, 1400, 2000]}
+          formats={['avif', 'webp', 'jpeg']}
+          loading="eager"
+          fetchpriority="high"
+        />
+      </div>
+    )}
+
+    <p class="prose" style="font-size: var(--step-1); color: var(--fg); max-width: 56ch;">
+      The same two subjects — a martini glass with blue liquid, and three apples
+      — shot with every light modifier I own. The camera, light position, and
+      subject are locked. The front face of each modifier is placed at the same
+      distance. Exposure is matched on the subject. Only the modifier changes.
+    </p>
+    <p class="prose" style="color: var(--fg-muted);">
+      Browse by class below, or jump straight to the
+      <a href={u('/compare')}>comparison view</a>.
+    </p>
+  </section>
+
+  <section style="margin-top: var(--s-6);">
+    <h2 style="font-family: var(--font-mono); font-size: var(--step-small); letter-spacing: 0.08em; text-transform: uppercase; color: var(--fg-muted); margin-bottom: var(--s-4);">
+      Classes
+    </h2>
+    <ul class="class-grid">
+      {groups.map((g, i) => (
+        <li>
+          <a class="class-card" href={u(`/${g.slug}`)}>
+            <div class="thumb">
+              {groupThumbs[i] && (
+                <Image
+                  src={groupThumbs[i]!}
+                  alt=""
+                  widths={[400, 600]}
+                  sizes="(min-width: 800px) 280px, 50vw"
+                  formats={['avif', 'webp', 'jpeg']}
+                  loading="lazy"
+                />
+              )}
+            </div>
+            <h3>{g.title}</h3>
+            <div class="count">{g.modifiers.length} configuration{g.modifiers.length === 1 ? '' : 's'}</div>
+          </a>
+        </li>
+      ))}
+    </ul>
+  </section>
+
+  <section style="margin-top: var(--s-7);">
+    <div style="border: 1px solid var(--border); padding: var(--s-5); display: flex; justify-content: space-between; align-items: center; gap: var(--s-4); flex-wrap: wrap;">
+      <div>
+        <h2 style="margin: 0 0 var(--s-1); font-size: var(--step-2);">Compare any two</h2>
+        <p style="margin: 0; color: var(--fg-muted);">
+          Slider, side-by-side, or toggle in place. Shareable URL.
+        </p>
+      </div>
+      <a href={u('/compare')} style="font-family: var(--font-mono); font-size: var(--step-small); letter-spacing: 0.04em; color: var(--fg);">→ Open compare</a>
+    </div>
+  </section>
+</Base>

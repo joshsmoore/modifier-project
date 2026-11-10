@@ -1,0 +1,231 @@
+# Shot log. Each row is one modifier × one subject.
+# Image filenames are resolved against src/assets/shots/.
+# `id` is any unique string; keep it stable so compare links don't rot.
+
+- id: bare-flash_glass
+  modifier: bare-flash
+  subject: glass
+  image: bare-flash_glass.jpg
+  power: "1/32"
+  distance: 18
+  setupImage: bare-flash_setup.jpg
+  notes: Reference frame. All other shots are compared against this.
+- id: bare-flash_apples
+  modifier: bare-flash
+  subject: apples
+  image: bare-flash_apples.jpg
+  power: "1/32"
+  distance: 18
+  setupImage: bare-flash_setup.jpg
+
+- id: magsnoot-1_glass
+  modifier: magsnoot-1
+  subject: glass
+  image: magsnoot-1_glass.jpg
+  power: "1/16"
+  distance: 18
+- id: magsnoot-1_apples
+  modifier: magsnoot-1
+  subject: apples
+  image: magsnoot-1_apples.jpg
+  power: "1/16"
+  distance: 18
+
+- id: magsnoot-2_glass
+  modifier: magsnoot-2
+  subject: glass
+  image: magsnoot-2_glass.jpg
+  power: "1/16 +0.3"
+  distance: 18
+- id: magsnoot-2_apples
+  modifier: magsnoot-2
+  subject: apples
+  image: magsnoot-2_apples.jpg
+  power: "1/16 +0.3"
+  distance: 18
+
+- id: magsnoot-3_glass
+  modifier: magsnoot-3
+  subject: glass
+  image: magsnoot-3_glass.jpg
+  power: "1/16 +0.7"
+  distance: 18
+- id: magsnoot-3_apples
+  modifier: magsnoot-3
+  subject: apples
+  image: magsnoot-3_apples.jpg
+  power: "1/16 +0.7"
+  distance: 18
+
+- id: magsnoot-4_glass
+  modifier: magsnoot-4
+  subject: glass
+  image: magsnoot-4_glass.jpg
+  power: "1/8"
+  distance: 18
+- id: magsnoot-4_apples
+  modifier: magsnoot-4
+  subject: apples
+  image: magsnoot-4_apples.jpg
+  power: "1/8"
+  distance: 18
+
+- id: magsnoot-grid-1_glass
+  modifier: magsnoot-grid-1
+  subject: glass
+  image: magsnoot-grid-1_glass.jpg
+  power: "1/8"
+  distance: 18
+- id: magsnoot-grid-1_apples
+  modifier: magsnoot-grid-1
+  subject: apples
+  image: magsnoot-grid-1_apples.jpg
+  power: "1/8"
+  distance: 18
+
+- id: magsnoot-grid-2_glass
+  modifier: magsnoot-grid-2
+  subject: glass
+  image: magsnoot-grid-2_glass.jpg
+  power: "1/8 +0.3"
+  distance: 18
+- id: magsnoot-grid-2_apples
+  modifier: magsnoot-grid-2
+  subject: apples
+  image: magsnoot-grid-2_apples.jpg
+  power: "1/8 +0.3"
+  distance: 18
+
+- id: magsnoot-grid-3_glass
+  modifier: magsnoot-grid-3
+  subject: glass
+  image: magsnoot-grid-3_glass.jpg
+  power: "1/8 +0.7"
+  distance: 18
+- id: magsnoot-grid-3_apples
+  modifier: magsnoot-grid-3
+  subject: apples
+  image: magsnoot-grid-3_apples.jpg
+  power: "1/8 +0.7"
+  distance: 18
+
+- id: magsnoot-grid-4_glass
+  modifier: magsnoot-grid-4
+  subject: glass
+  image: magsnoot-grid-4_glass.jpg
+  power: "1/4"
+  distance: 18
+- id: magsnoot-grid-4_apples
+  modifier: magsnoot-grid-4
+  subject: apples
+  image: magsnoot-grid-4_apples.jpg
+  power: "1/4"
+  distance: 18
+
+- id: softbox-24-bare_glass
+  modifier: softbox-24-bare
+  subject: glass
+  image: softbox-24-bare_glass.jpg
+  power: "1/16"
+  distance: 18
+  setupImage: softbox-24-bare_setup.jpg
+- id: softbox-24-bare_apples
+  modifier: softbox-24-bare
+  subject: apples
+  image: softbox-24-bare_apples.jpg
+  power: "1/16"
+  distance: 18
+  setupImage: softbox-24-bare_setup.jpg
+
+- id: softbox-24-baffle_glass
+  modifier: softbox-24-baffle
+  subject: glass
+  image: softbox-24-baffle_glass.jpg
+  power: "1/16 +0.3"
+  distance: 18
+- id: softbox-24-baffle_apples
+  modifier: softbox-24-baffle
+  subject: apples
+  image: softbox-24-baffle_apples.jpg
+  power: "1/16 +0.3"
+  distance: 18
+
+- id: softbox-24-diffusion_glass
+  modifier: softbox-24-diffusion
+  subject: glass
+  image: softbox-24-diffusion_glass.jpg
+  power: "1/8"
+  distance: 18
+- id: softbox-24-diffusion_apples
+  modifier: softbox-24-diffusion
+  subject: apples
+  image: softbox-24-diffusion_apples.jpg
+  power: "1/8"
+  distance: 18
+
+- id: softbox-24-diffusion-grid_glass
+  modifier: softbox-24-diffusion-grid
+  subject: glass
+  image: softbox-24-diffusion-grid_glass.jpg
+  power: "1/4"
+  distance: 18
+- id: softbox-24-diffusion-grid_apples
+  modifier: softbox-24-diffusion-grid
+  subject: apples
+  image: softbox-24-diffusion-grid_apples.jpg
+  power: "1/4"
+  distance: 18
+
+- id: softbox-36-bare_glass
+  modifier: softbox-36-bare
+  subject: glass
+  image: softbox-36-bare_glass.jpg
+  power: "1/16"
+  distance: 18
+  setupImage: softbox-36-bare_setup.jpg
+- id: softbox-36-bare_apples
+  modifier: softbox-36-bare
+  subject: apples
+  image: softbox-36-bare_apples.jpg
+  power: "1/16"
+  distance: 18
+  setupImage: softbox-36-bare_setup.jpg
+
+- id: softbox-36-baffle_glass
+  modifier: softbox-36-baffle
+  subject: glass
+  image: softbox-36-baffle_glass.jpg
+  power: "1/16 +0.3"
+  distance: 18
+- id: softbox-36-baffle_apples
+  modifier: softbox-36-baffle
+  subject: apples
+  image: softbox-36-baffle_apples.jpg
+  power: "1/16 +0.3"
+  distance: 18
+
+- id: softbox-36-diffusion_glass
+  modifier: softbox-36-diffusion
+  subject: glass
+  image: softbox-36-diffusion_glass.jpg
+  power: "1/8"
+  distance: 18
+- id: softbox-36-diffusion_apples
+  modifier: softbox-36-diffusion
+  subject: apples
+  image: softbox-36-diffusion_apples.jpg
+  power: "1/8"
+  distance: 18
+
+- id: softbox-36-diffusion-grid_glass
+  modifier: softbox-36-diffusion-grid
+  subject: glass
+  image: softbox-36-diffusion-grid_glass.jpg
+  power: "1/4"
+  distance: 18
+- id: softbox-36-diffusion-grid_apples
+  modifier: softbox-36-diffusion-grid
+  subject: apples
+  image: softbox-36-diffusion-grid_apples.jpg
+  power: "1/4"
+  distance: 18

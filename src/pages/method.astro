@@ -1,0 +1,127 @@
+---
+import Base from '~/layouts/Base.astro';
+import { getCollection } from 'astro:content';
+import { getClassGroups } from '~/lib/classes';
+import { u } from '~/lib/url';
+
+const shots = await getCollection('shots');
+const groups = await getClassGroups();
+
+const modifierLabel = new Map<string, { label: string; groupSlug: string }>();
+for (const g of groups) {
+  for (const m of g.modifiers) modifierLabel.set(m.id, { label: m.data.name, groupSlug: g.slug });
+}
+
+const rows = shots
+  .map((s) => {
+    const meta = modifierLabel.get(s.data.modifier.id);
+    return {
+      id: s.id,
+      modifier: meta?.label ?? s.data.modifier.id,
+      modifierSlug: s.data.modifier.id,
+      groupSlug: meta?.groupSlug ?? '',
+      subject: s.data.subject,
+      power: s.data.power,
+      distance: s.data.distance,
+      notes: s.data.notes ?? '',
+    };
+  })
+  .sort((a, b) => a.modifier.localeCompare(b.modifier) || a.subject.localeCompare(b.subject));
+---
+
+<Base title="Method — Modifier Project" description="How these shots were made.">
+  <header style="margin-bottom: var(--s-5);">
+    <h1 style="margin: 0;">Method</h1>
+  </header>
+
+  <section class="prose">
+    <h2>Setup</h2>
+    <p>
+      Camera, light position, and both subjects are fixed to marks on the table.
+      For every frame, the modifier's front face is placed at the same distance
+      from the subject (measured, not eyeballed). The shutter speed, aperture,
+      and ISO are also fixed; flash power is adjusted so the lit area on the
+      subject exposes the same. Ambient is killed — the no-flash frame proves it.
+    </p>
+
+    <h2>Gear</h2>
+    <ul>
+      <li>Camera: (your body)</li>
+      <li>Lens: (your lens)</li>
+      <li>Flash: (your speedlight)</li>
+      <li>Trigger: (your trigger)</li>
+      <li>Light stand, boom, sandbag</li>
+      <li>Backdrop: black, non-reflective</li>
+      <li>Modifiers: everything on this site</li>
+    </ul>
+
+    <h2>Measurements</h2>
+    <p>
+      "Distance" is the distance from the modifier's <em>front face</em> to the
+      subject's front, not the flash head itself. "Power" is the fractional
+      output on the speedlight; <code>+0.3</code> means one third of a stop above
+      that setting, matching the speedlight's own increments.
+    </p>
+  </section>
+
+  <h2 style="margin-top: var(--s-6);">Log</h2>
+  <p class="small">Click a column header to sort.</p>
+  <div style="overflow-x: auto;">
+    <table class="log" id="log">
+      <thead>
+        <tr>
+          <th data-key="modifier" aria-sort="ascending">Modifier</th>
+          <th data-key="subject">Subject</th>
+          <th data-key="power">Power</th>
+          <th data-key="distance">Distance</th>
+          <th data-key="notes">Notes</th>
+        </tr>
+      </thead>
+      <tbody>
+        {rows.map((r) => (
+          <tr>
+            <td><a href={u(`/${r.groupSlug}/${r.modifierSlug}`)} style="border: 0; color: var(--fg);">{r.modifier}</a></td>
+            <td>{r.subject}</td>
+            <td>{r.power}</td>
+            <td>{r.distance}"</td>
+            <td>{r.notes}</td>
+          </tr>
+        ))}
+      </tbody>
+    </table>
+  </div>
+
+  <script>
+    const table = document.getElementById('log') as HTMLTableElement | null;
+    if (table) {
+      const tbody = table.tBodies[0]!;
+      const headers = table.querySelectorAll<HTMLTableCellElement>('th[data-key]');
+      let currentKey = 'modifier';
+      let ascending = true;
+
+      const getValue = (row: HTMLTableRowElement, idx: number) =>
+        row.cells[idx]?.textContent?.trim() ?? '';
+
+      const sortBy = (key: string, idx: number) => {
+        if (currentKey === key) ascending = !ascending;
+        else { currentKey = key; ascending = true; }
+
+        headers.forEach((h) => h.removeAttribute('aria-sort'));
+        headers[idx]!.setAttribute('aria-sort', ascending ? 'ascending' : 'descending');
+
+        const rows = Array.from(tbody.rows);
+        rows.sort((a, b) => {
+          const av = getValue(a, idx);
+          const bv = getValue(b, idx);
+          const an = parseFloat(av);
+          const bn = parseFloat(bv);
+          const cmp = (!isNaN(an) && !isNaN(bn)) ? an - bn : av.localeCompare(bv);
+          return ascending ? cmp : -cmp;
+        });
+        for (const r of rows) tbody.appendChild(r);
+      };
+
+      headers.forEach((h, i) => h.addEventListener('click', () => sortBy(h.dataset.key!, i)));
+    }
+  </script>
+</Base>

@@ -1,0 +1,75 @@
+---
+import Base from '~/layouts/Base.astro';
+import ShotFigure from '~/components/ShotFigure.astro';
+import { getClassGroups } from '~/lib/classes';
+import { shotsForModifier } from '~/lib/shots';
+import { getShotImage, tryGetShotImage } from '~/lib/images';
+import { u } from '~/lib/url';
+
+export async function getStaticPaths() {
+  const groups = await getClassGroups();
+  return groups.map((g) => ({ params: { class: g.slug }, props: { group: g } }));
+}
+
+type GroupProp = Awaited<ReturnType<typeof getClassGroups>>[number];
+const { group } = Astro.props as { group: GroupProp };
+
+const sections = await Promise.all(
+  group.modifiers.map(async (mod) => {
+    const shots = await shotsForModifier(mod.id);
+    const setupImg = tryGetShotImage(shots.glass?.data.setupImage);
+    return { mod, shots, setupImg };
+  }),
+);
+---
+
+<Base title={`${group.title} — Modifier Project`} description={`${group.title} configurations`}>
+  <header style="margin-bottom: var(--s-5);">
+    <div style="font-family: var(--font-mono); font-size: var(--step-small); color: var(--fg-dim); text-transform: uppercase; letter-spacing: 0.08em;">
+      <a href={u('/')} style="border: 0; color: var(--fg-muted);">← Home</a>
+    </div>
+    <h1 style="margin-top: var(--s-2);">{group.title}</h1>
+    <p class="prose" style="color: var(--fg-muted);">
+      {group.modifiers.length} configuration{group.modifiers.length === 1 ? '' : 's'}, both subjects, with settings and setup shot where available.
+    </p>
+  </header>
+
+  <ul class="config-list">
+    {sections.map(({ mod, shots, setupImg }) => (
+      <li class="config-block">
+        <header>
+          <h2>{mod.data.name}</h2>
+          <a class="config-link" href={u(`/${group.slug}/${mod.id}`)}>View large →</a>
+        </header>
+        <div class="shots">
+          {shots.glass && (
+            <ShotFigure
+              image={getShotImage(shots.glass.data.image)}
+              alt={`${mod.data.name} — glass`}
+              power={shots.glass.data.power}
+              distance={shots.glass.data.distance}
+            />
+          )}
+          {shots.apples && (
+            <ShotFigure
+              image={getShotImage(shots.apples.data.image)}
+              alt={`${mod.data.name} — apples`}
+              power={shots.apples.data.power}
+              distance={shots.apples.data.distance}
+            />
+          )}
+        </div>
+        {setupImg && (
+          <div class="setup-shot">
+            <h3>Setup</h3>
+            <ShotFigure
+              image={setupImg}
+              alt={`${mod.data.name} — setup`}
+              showDownload={false}
+            />
+          </div>
+        )}
+      </li>
+    ))}
+  </ul>
+</Base>

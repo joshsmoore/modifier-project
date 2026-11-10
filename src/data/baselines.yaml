@@ -1,0 +1,29 @@
+# Baseline frames.
+# no-flash: ambient only; should be pure black if the room is dark enough.
+# bare-flash: canonical reference every modifier is judged against.
+
+- id: no-flash_glass
+  subject: glass
+  kind: no-flash
+  image: no-flash_glass.jpg
+  notes: Shutter and aperture matched to the lit frames. Confirms ambient = 0.
+
+- id: no-flash_apples
+  subject: apples
+  kind: no-flash
+  image: no-flash_apples.jpg
+  notes: Shutter and aperture matched to the lit frames. Confirms ambient = 0.
+
+- id: bare-flash_glass
+  subject: glass
+  kind: bare-flash
+  image: bare-flash_glass.jpg
+  power: "1/32"
+  distance: 18
+
+- id: bare-flash_apples
+  subject: apples
+  kind: bare-flash
+  image: bare-flash_apples.jpg
+  power: "1/32"
+  distance: 18

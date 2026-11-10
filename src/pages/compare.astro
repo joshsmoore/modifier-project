@@ -1,0 +1,226 @@
+---
+import { getImage } from 'astro:assets';
+import { getCollection } from 'astro:content';
+import Base from '~/layouts/Base.astro';
+import { getClassGroups } from '~/lib/classes';
+import { getShotImage } from '~/lib/images';
+import { u } from '~/lib/url';
+
+const groups = await getClassGroups();
+const shots = await getCollection('shots');
+
+// Build { modifierId: { subject: processedImageUrl } } at build time.
+type Subject = 'glass' | 'apples';
+const imageMap: Record<string, Partial<Record<Subject, string>>> = {};
+for (const s of shots) {
+  const file = getShotImage(s.data.image);
+  const out = await getImage({ src: file, width: 1600, format: 'webp', quality: 85 });
+  const key = s.data.modifier.id;
+  (imageMap[key] ??= {})[s.data.subject] = out.src;
+}
+
+// Modifier label lookup for JS.
+const labels: Record<string, string> = {};
+for (const g of groups) {
+  for (const m of g.modifiers) labels[m.id] = m.data.name;
+}
+---
+
+<Base title="Compare — Modifier Project" description="Compare any two modifiers side by side.">
+  <header style="margin-bottom: var(--s-4);">
+    <h1 style="margin: 0;">Compare</h1>
+    <p class="prose" style="color: var(--fg-muted); margin-top: var(--s-2);">
+      Pick two modifiers and a subject. The URL stays in sync — copy it to share
+      a specific comparison.
+    </p>
+  </header>
+
+  <form class="compare-controls" id="compare-controls" onsubmit="return false;">
+    <label>
+      A
+      <select id="compare-a">
+        <option value="">—</option>
+        {groups.map((g) => (
+          <optgroup label={g.title}>
+            {g.modifiers.map((m) => <option value={m.id}>{m.data.name}</option>)}
+          </optgroup>
+        ))}
+      </select>
+    </label>
+    <label>
+      B
+      <select id="compare-b">
+        <option value="">—</option>
+        {groups.map((g) => (
+          <optgroup label={g.title}>
+            {g.modifiers.map((m) => <option value={m.id}>{m.data.name}</option>)}
+          </optgroup>
+        ))}
+      </select>
+    </label>
+    <label>
+      Subject
+      <select id="compare-subject">
+        <option value="glass">Glass</option>
+        <option value="apples">Apples</option>
+      </select>
+    </label>
+    <label>
+      View
+      <div class="view-switch" role="group" aria-label="View mode">
+        <button type="button" data-view="slider" aria-pressed="true">slider</button>
+        <button type="button" data-view="side-by-side" aria-pressed="false">side</button>
+        <button type="button" data-view="toggle" aria-pressed="false">toggle</button>
+      </div>
+    </label>
+  </form>
+
+  <div class="compare-stage" id="compare-stage" style="min-height: 320px;">
+    <div class="empty" id="compare-empty">Pick two modifiers to compare.</div>
+
+    <div id="view-slider" hidden>
+      <compare-slider id="slider" style="aspect-ratio: 3 / 2;"></compare-slider>
+    </div>
+
+    <div id="view-side-by-side" hidden>
+      <div class="side-by-side">
+        <figure>
+          <img id="side-a" alt="" />
+          <figcaption class="caption" style="padding: var(--s-3);"><dt>A</dt><dd id="side-label-a">—</dd></figcaption>
+        </figure>
+        <figure>
+          <img id="side-b" alt="" />
+          <figcaption class="caption" style="padding: var(--s-3);"><dt>B</dt><dd id="side-label-b">—</dd></figcaption>
+        </figure>
+      </div>
+    </div>
+
+    <div id="view-toggle" hidden>
+      <compare-toggle id="toggle"></compare-toggle>
+      <p class="small" style="padding: var(--s-3); margin: 0; text-align: center;">
+        Click, or press <kbd>space</kbd>, to flip.
+      </p>
+    </div>
+  </div>
+
+  <script type="application/json" id="compare-images" set:html={JSON.stringify(imageMap)} />
+  <script type="application/json" id="compare-labels" set:html={JSON.stringify(labels)} />
+
+  <script>
+    import '~/components/CompareSlider';
+    import '~/components/CompareToggle';
+    import { parseCompareQuery, serializeCompareQuery } from '~/lib/url-state';
+    import type { CompareView, CompareSubject } from '~/lib/url-state';
+
+    type ImageMap = Record<string, Partial<Record<CompareSubject, string>>>;
+
+    const images = JSON.parse(
+      document.getElementById('compare-images')!.textContent!,
+    ) as ImageMap;
+    const labels = JSON.parse(
+      document.getElementById('compare-labels')!.textContent!,
+    ) as Record<string, string>;
+
+    const selA = document.getElementById('compare-a') as HTMLSelectElement;
+    const selB = document.getElementById('compare-b') as HTMLSelectElement;
+    const selSubject = document.getElementById('compare-subject') as HTMLSelectElement;
+    const viewButtons = document.querySelectorAll<HTMLButtonElement>('.view-switch button');
+    const empty = document.getElementById('compare-empty')!;
+    const viewSlider = document.getElementById('view-slider')!;
+    const viewSide = document.getElementById('view-side-by-side')!;
+    const viewToggle = document.getElementById('view-toggle')!;
+    const slider = document.getElementById('slider')!;
+    const toggle = document.getElementById('toggle')!;
+    const sideA = document.getElementById('side-a') as HTMLImageElement;
+    const sideB = document.getElementById('side-b') as HTMLImageElement;
+    const sideLabelA = document.getElementById('side-label-a')!;
+    const sideLabelB = document.getElementById('side-label-b')!;
+
+    const state = parseCompareQuery(location.search);
+    if (state.a) selA.value = state.a;
+    if (state.b) selB.value = state.b;
+    selSubject.value = state.subject;
+    setViewButtons(state.view);
+    render();
+
+    selA.addEventListener('change', () => { syncUrl(); render(); });
+    selB.addEventListener('change', () => { syncUrl(); render(); });
+    selSubject.addEventListener('change', () => { syncUrl(); render(); });
+    viewButtons.forEach((btn) => {
+      btn.addEventListener('click', () => {
+        setViewButtons(btn.dataset.view as CompareView);
+        syncUrl();
+        render();
+      });
+    });
+
+    function currentView(): CompareView {
+      const pressed = Array.from(viewButtons).find((b) => b.getAttribute('aria-pressed') === 'true');
+      return (pressed?.dataset.view as CompareView) ?? 'slider';
+    }
+
+    function setViewButtons(v: CompareView) {
+      viewButtons.forEach((b) => {
+        b.setAttribute('aria-pressed', b.dataset.view === v ? 'true' : 'false');
+      });
+    }
+
+    function syncUrl() {
+      const q = serializeCompareQuery({
+        a: selA.value || null,
+        b: selB.value || null,
+        subject: selSubject.value as CompareSubject,
+        view: currentView(),
+      });
+      history.replaceState(null, '', location.pathname + q);
+    }
+
+    function render() {
+      const a = selA.value;
+      const b = selB.value;
+      const subject = selSubject.value as CompareSubject;
+      const view = currentView();
+
+      const urlA = a ? images[a]?.[subject] : undefined;
+      const urlB = b ? images[b]?.[subject] : undefined;
+
+      const ready = Boolean(urlA && urlB);
+      empty.hidden = ready;
+      viewSlider.hidden = !(ready && view === 'slider');
+      viewSide.hidden = !(ready && view === 'side-by-side');
+      viewToggle.hidden = !(ready && view === 'toggle');
+
+      if (!ready) return;
+
+      const labelA = labels[a] ?? a;
+      const labelB = labels[b] ?? b;
+
+      // Slider
+      slider.setAttribute('src-a', urlA!);
+      slider.setAttribute('src-b', urlB!);
+      slider.setAttribute('alt-a', labelA);
+      slider.setAttribute('alt-b', labelB);
+      // Force re-init by remounting content
+      slider.innerHTML = '';
+      (slider as any).connectedCallback?.();
+
+      // Side by side
+      sideA.src = urlA!;
+      sideA.alt = labelA;
+      sideB.src = urlB!;
+      sideB.alt = labelB;
+      sideLabelA.textContent = labelA;
+      sideLabelB.textContent = labelB;
+
+      // Toggle
+      toggle.setAttribute('src-a', urlA!);
+      toggle.setAttribute('src-b', urlB!);
+      toggle.setAttribute('alt-a', labelA);
+      toggle.setAttribute('alt-b', labelB);
+      toggle.setAttribute('label-a', labelA);
+      toggle.setAttribute('label-b', labelB);
+      toggle.innerHTML = '';
+      (toggle as any).connectedCallback?.();
+    }
+  </script>
+</Base>

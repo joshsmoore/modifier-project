@@ -1,0 +1,118 @@
+---
+import Base from '~/layouts/Base.astro';
+import ShotFigure from '~/components/ShotFigure.astro';
+import { getClassGroups } from '~/lib/classes';
+import { shotsForModifier } from '~/lib/shots';
+import { getShotImage, tryGetShotImage } from '~/lib/images';
+import { u } from '~/lib/url';
+import { render } from 'astro:content';
+
+export async function getStaticPaths() {
+  const groups = await getClassGroups();
+  const paths = [];
+  for (const g of groups) {
+    for (let i = 0; i < g.modifiers.length; i++) {
+      const mod = g.modifiers[i];
+      const prev = g.modifiers[i - 1] ?? null;
+      const next = g.modifiers[i + 1] ?? null;
+      paths.push({
+        params: { class: g.slug, slug: mod.id },
+        props: { group: g, mod, prev, next },
+      });
+    }
+  }
+  return paths;
+}
+
+type Group = Awaited<ReturnType<typeof getClassGroups>>[number];
+type Mod = Group['modifiers'][number];
+const { group, mod, prev, next } = Astro.props as {
+  group: Group;
+  mod: Mod;
+  prev: Mod | null;
+  next: Mod | null;
+};
+
+const shots = await shotsForModifier(mod.id);
+const setupImg = tryGetShotImage(shots.glass?.data.setupImage);
+const { Content } = await render(mod);
+
+const compareLink = (subject: 'glass' | 'apples') =>
+  u(`/compare?a=${mod.id}&b=bare-flash&s=${subject}&v=slider`);
+---
+
+<Base title={`${mod.data.name} — Modifier Project`}>
+  <header style="margin-bottom: var(--s-5);">
+    <div style="font-family: var(--font-mono); font-size: var(--step-small); color: var(--fg-dim); text-transform: uppercase; letter-spacing: 0.08em;">
+      <a href={u(`/${group.slug}`)} style="border: 0; color: var(--fg-muted);">← {group.title}</a>
+    </div>
+    <h1 style="margin-top: var(--s-2);">{mod.data.name}</h1>
+    {mod.data.configuration && (
+      <div class="small" style="margin-top: calc(var(--s-3) * -1);">{mod.data.configuration}</div>
+    )}
+  </header>
+
+  <div class="modifier-shots">
+    {shots.glass && (
+      <ShotFigure
+        image={getShotImage(shots.glass.data.image)}
+        alt={`${mod.data.name} — glass`}
+        power={shots.glass.data.power}
+        distance={shots.glass.data.distance}
+        loading="eager"
+      />
+    )}
+    {shots.apples && (
+      <ShotFigure
+        image={getShotImage(shots.apples.data.image)}
+        alt={`${mod.data.name} — apples`}
+        power={shots.apples.data.power}
+        distance={shots.apples.data.distance}
+        loading="eager"
+      />
+    )}
+  </div>
+
+  <section class="prose" style="margin-top: var(--s-5);">
+    <Content />
+  </section>
+
+  {mod.id !== 'bare-flash' && (
+    <section style="margin-top: var(--s-5);">
+      <h3 style="font-family: var(--font-mono); font-size: var(--step-small); letter-spacing: 0.08em; text-transform: uppercase; color: var(--fg-muted); margin-bottom: var(--s-3);">
+        Compare with
+      </h3>
+      <ul style="list-style: none; padding: 0; margin: 0; display: flex; gap: var(--s-4); flex-wrap: wrap;">
+        <li><a href={compareLink('glass')}>↔ Bare flash (glass)</a></li>
+        <li><a href={compareLink('apples')}>↔ Bare flash (apples)</a></li>
+        <li><a href={u(`/compare?a=${mod.id}`)}>Pick another</a></li>
+      </ul>
+    </section>
+  )}
+
+  {setupImg && (
+    <section class="setup-shot">
+      <h3>Setup</h3>
+      <ShotFigure image={setupImg} alt={`${mod.data.name} — setup`} showDownload={false} />
+    </section>
+  )}
+
+  <nav class="prev-next" aria-label="Within class">
+    <div>
+      {prev && (
+        <a href={u(`/${group.slug}/${prev.id}`)}>
+          <span class="label">Previous</span>
+          {prev.data.name}
+        </a>
+      )}
+    </div>
+    <div style="text-align: right;">
+      {next && (
+        <a href={u(`/${group.slug}/${next.id}`)}>
+          <span class="label">Next</span>
+          {next.data.name}
+        </a>
+      )}
+    </div>
+  </nav>
+</Base>

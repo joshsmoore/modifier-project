@@ -1,0 +1,71 @@
+---
+import { Image, getImage } from 'astro:assets';
+import type { ImageMetadata } from 'astro';
+
+type Props = {
+  image: ImageMetadata;
+  alt: string;
+  power?: string;
+  distance?: number;
+  modifierName?: string;
+  showDownload?: boolean;
+  sizes?: string;
+  loading?: 'eager' | 'lazy';
+};
+const {
+  image,
+  alt,
+  power,
+  distance,
+  modifierName,
+  showDownload = true,
+  sizes = '(min-width: 1024px) 560px, (min-width: 640px) 48vw, 100vw',
+  loading = 'lazy',
+} = Astro.props;
+
+// Full-resolution variant for the download link. EXIF is stripped on re-encode.
+let fullHref: string | null = null;
+if (showDownload) {
+  const full = await getImage({ src: image, format: 'jpeg', quality: 92 });
+  fullHref = full.src;
+}
+---
+
+<figure>
+  <Image
+    src={image}
+    alt={alt}
+    sizes={sizes}
+    widths={[480, 800, 1200, 1600]}
+    formats={['avif', 'webp', 'jpeg']}
+    loading={loading}
+    decoding="async"
+    quality={82}
+  />
+  <dl class="caption">
+    {modifierName && (
+      <>
+        <dt>Modifier</dt>
+        <dd>{modifierName}</dd>
+      </>
+    )}
+    {power && (
+      <>
+        <dt>Power</dt>
+        <dd>{power}</dd>
+      </>
+    )}
+    {distance != null && (
+      <>
+        <dt>Distance</dt>
+        <dd>{distance}"</dd>
+      </>
+    )}
+    {fullHref && (
+      <>
+        <dt>Full</dt>
+        <dd><a href={fullHref} download>Download</a></dd>
+      </>
+    )}
+  </dl>
+</figure>

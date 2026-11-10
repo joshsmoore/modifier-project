@@ -1,0 +1,25 @@
+{
+  "name": "modifier-project",
+  "version": "0.1.0",
+  "private": true,
+  "type": "module",
+  "scripts": {
+    "predev": "tsx scripts/generate-placeholders.ts",
+    "dev": "astro dev",
+    "prebuild": "tsx scripts/generate-placeholders.ts && tsx scripts/validate-dimensions.ts",
+    "build": "astro build",
+    "preview": "astro preview",
+    "check": "astro check"
+  },
+  "dependencies": {
+    "astro": "^5.0.0"
+  },
+  "devDependencies": {
+    "@astrojs/check": "^0.9.0",
+    "@types/node": "^20.0.0",
+    "sharp": "^0.33.0",
+    "tsx": "^4.0.0",
+    "typescript": "^5.4.0",
+    "yaml": "^2.4.0"
+  }
+}

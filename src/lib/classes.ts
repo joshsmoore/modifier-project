@@ -17,7 +17,7 @@ function normalizeSize(size: string): string {
   return size.replace(/[^a-z0-9]+/gi, '').toLowerCase();
 }
 
-export function groupSlug(mod: ModifierEntry): string {
+export function groupSlug(mod: { data: { class: ModifierClass; size?: string } }): string {
   const { class: cls, size } = mod.data;
   if (!size) return cls;
   return `${cls}-${normalizeSize(size)}`;

@@ -1,9 +1,12 @@
 ---
+import { Image } from 'astro:assets';
+import { render } from 'astro:content';
 import Base from '~/layouts/Base.astro';
 import ShotFigure from '~/components/ShotFigure.astro';
 import { getClassGroups } from '~/lib/classes';
+import { getGroupContent } from '~/lib/groups';
 import { shotsForModifier } from '~/lib/shots';
-import { getShotImage, tryGetShotImage } from '~/lib/images';
+import { getShotImage, tryGetShotImage, tryGetGearImage } from '~/lib/images';
 import { u } from '~/lib/url';
 
 export async function getStaticPaths() {
@@ -13,6 +16,15 @@ export async function getStaticPaths() {
 
 type GroupProp = Awaited<ReturnType<typeof getClassGroups>>[number];
 const { group } = Astro.props as { group: GroupProp };
+
+const groupContent = await getGroupContent(group.slug);
+const Overview = groupContent ? (await render(groupContent)).Content : null;
+const heroImage = tryGetGearImage(groupContent?.data.hero);
+const extraImages =
+  groupContent?.data.images?.map((img) => ({
+    img: tryGetGearImage(img.src),
+    caption: img.caption,
+  })) ?? [];
 
 const sections = await Promise.all(
   group.modifiers.map(async (mod) => {
@@ -76,4 +88,46 @@ const sections = await Promise.all(
       </li>
     ))}
   </ul>
+
+  {groupContent && (
+    <section class="group-overview">
+      <h2 class="group-overview-title">About the {group.title.toLowerCase()}</h2>
+      {heroImage && (
+        <div class="group-hero">
+          <Image
+            src={heroImage}
+            alt={`${group.title} — hardware`}
+            sizes="(min-width: 1024px) 480px, 100vw"
+            widths={[480, 800, 1200]}
+            formats={['avif', 'webp', 'jpeg']}
+            loading="lazy"
+          />
+        </div>
+      )}
+      {Overview && (
+        <div class="prose">
+          <Overview />
+        </div>
+      )}
+      {extraImages.length > 0 && (
+        <ul class="group-gallery">
+          {extraImages.map(({ img, caption }) =>
+            img ? (
+              <li>
+                <Image
+                  src={img}
+                  alt={caption ?? ''}
+                  sizes="(min-width: 1024px) 480px, 100vw"
+                  widths={[480, 800, 1200]}
+                  formats={['avif', 'webp', 'jpeg']}
+                  loading="lazy"
+                />
+                {caption && <figcaption>{caption}</figcaption>}
+              </li>
+            ) : null,
+          )}
+        </ul>
+      )}
+    </section>
+  )}
 </Base>

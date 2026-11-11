@@ -1,7 +1,7 @@
 ---
 name: Bulb
 class: bare
-configuration: bare bulb (Fresnel removed)
+configuration: bare bulb head
 order: 2
 ---
 

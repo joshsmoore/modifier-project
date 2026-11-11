@@ -45,6 +45,28 @@ const baselines = defineCollection({
   }),
 });
 
-export const collections = { modifiers, shots, baselines };
+// One entry per class group (bare, snoot, softbox-24, softbox-36, …).
+// Describes the modifier *hardware* itself: what it is, photos of it,
+// how it's set up. Rendered as an overview at the top of the class page.
+// The filename must equal the group slug (e.g. softbox-24.md).
+const groups = defineCollection({
+  loader: glob({ pattern: '**/*.md', base: './src/content/groups' }),
+  schema: z.object({
+    name: z.string(),
+    class: modifierClass,
+    size: z.string().optional(),
+    hero: z.string().optional(),
+    images: z
+      .array(
+        z.object({
+          src: z.string(),
+          caption: z.string().optional(),
+        }),
+      )
+      .optional(),
+  }),
+});
+
+export const collections = { modifiers, shots, baselines, groups };
 export type ModifierClass = z.infer<typeof modifierClass>;
 export type Subject = z.infer<typeof subject>;

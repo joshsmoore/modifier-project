@@ -89,32 +89,40 @@ function pickSlugs(arg: string, modifiers: Map<string, ModifierMeta>): string[] 
   return prefixMatches;
 }
 
-function overlaySvg(title: string, settings: string, tag: string): Buffer {
+function overlaySvg(title: string, settings?: string, tag?: string): Buffer {
+  const titleY = settings ? 72 : Math.round(BAND_H / 2 + 18);
+  const subRow = settings
+    ? `<text x="${PAD_X}" y="128"
+             fill="#a8a8a8"
+             font-family="Menlo, Courier, monospace"
+             font-size="30" letter-spacing="2">${esc(settings)}</text>
+       ${
+         tag
+           ? `<text x="${IG_W - PAD_X}" y="128"
+                    text-anchor="end"
+                    fill="#6a6a6a"
+                    font-family="Menlo, Courier, monospace"
+                    font-size="24" letter-spacing="3">${esc(tag)}</text>`
+           : ''
+       }`
+    : '';
   return Buffer.from(
     `<svg xmlns="http://www.w3.org/2000/svg" width="${IG_W}" height="${IG_H}">
        <rect x="0" y="0" width="${IG_W}" height="${BAND_H}"
              fill="rgba(10,10,10,0.78)"/>
-       <text x="${PAD_X}" y="72"
+       <text x="${PAD_X}" y="${titleY}"
              fill="#e8e8e8"
              font-family="Helvetica, Arial, sans-serif"
              font-size="52" font-weight="600">${esc(title)}</text>
-       <text x="${PAD_X}" y="128"
-             fill="#a8a8a8"
-             font-family="Menlo, Courier, monospace"
-             font-size="30" letter-spacing="2">${esc(settings)}</text>
-       <text x="${IG_W - PAD_X}" y="128"
-             text-anchor="end"
-             fill="#6a6a6a"
-             font-family="Menlo, Courier, monospace"
-             font-size="24" letter-spacing="3">${esc(tag)}</text>
+       ${subRow}
      </svg>`,
   );
 }
 
 type RenderOpts = {
   title: string;
-  settings: string;
-  tag: string;
+  settings?: string;
+  tag?: string;
   rotate?: boolean;
 };
 
@@ -191,7 +199,6 @@ async function main(): Promise<void> {
       await renderCrop(row.image, outFile, {
         title: mod.name,
         settings,
-        tag: row.subject.toUpperCase(),
       });
       console.log(`  ✓ ${slug}_${row.subject}_ig.jpg`);
     }
@@ -199,12 +206,9 @@ async function main(): Promise<void> {
     // Dedupe setup images: only one IG crop per unique setup photo.
     const setups = new Set(shots.map((s) => s.setupImage).filter((v): v is string => !!v));
     for (const setupFile of setups) {
-      const settings = `${shots[0]!.power}  ·  ${shots[0]!.distance}"  ·  ISO ${shots[0]!.iso}`;
       const outFile = resolve(outDir, `${slug}_setup_ig.jpg`);
       await renderCrop(setupFile, outFile, {
         title: mod.name,
-        settings,
-        tag: 'SETUP',
         rotate: true,
       });
       console.log(`  ✓ ${slug}_setup_ig.jpg (rotated)`);

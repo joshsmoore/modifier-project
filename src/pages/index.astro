@@ -20,8 +20,8 @@ async function thumbFor(group: Awaited<ReturnType<typeof getClassGroups>>[number
 
 const groupThumbs = await Promise.all(groups.map(thumbFor));
 
-// Hero image: bare flash glass.
-const heroShot = (await shotsForModifier('bare-flash')).glass;
+// Hero image: canonical speedlight on the glass.
+const heroShot = (await shotsForModifier('speedlight')).glass;
 const heroImage = heroShot ? getShotImage(heroShot.data.image) : null;
 ---
 

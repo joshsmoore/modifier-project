@@ -2,21 +2,37 @@
 # Image filenames are resolved against src/assets/shots/.
 # `id` is any unique string; keep it stable so compare links don't rot.
 
-- id: bare-flash_glass
-  modifier: bare-flash
+- id: speedlight_glass
+  modifier: speedlight
   subject: glass
-  image: bare-flash_glass.jpg
+  image: speedlight_glass.jpg
   power: "1/32"
   distance: 18
-  setupImage: bare-flash_setup.jpg
+  setupImage: speedlight_setup.jpg
   notes: Reference frame. All other shots are compared against this.
-- id: bare-flash_apples
-  modifier: bare-flash
+- id: speedlight_apples
+  modifier: speedlight
   subject: apples
-  image: bare-flash_apples.jpg
+  image: speedlight_apples.jpg
   power: "1/32"
   distance: 18
-  setupImage: bare-flash_setup.jpg
+  setupImage: speedlight_setup.jpg
+
+- id: bulb_glass
+  modifier: bulb
+  subject: glass
+  image: bulb_glass.jpg
+  power: "1/32"
+  distance: 18
+  setupImage: bulb_setup.jpg
+  notes: Fresnel removed; bare bulb exposed.
+- id: bulb_apples
+  modifier: bulb
+  subject: apples
+  image: bulb_apples.jpg
+  power: "1/32"
+  distance: 18
+  setupImage: bulb_setup.jpg
 
 - id: magsnoot-1_glass
   modifier: magsnoot-1

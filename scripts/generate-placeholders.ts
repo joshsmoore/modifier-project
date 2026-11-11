@@ -19,8 +19,8 @@ const shotsPath = resolve(root, 'src/data/shots.yaml');
 const baselinesPath = resolve(root, 'src/data/baselines.yaml');
 const outDir = resolve(root, 'src/assets/shots');
 
-const W = 1600;
-const H = 1067; // 3:2 landscape
+const W = 1997;
+const H = 3000; // 2:3 portrait, matching the exported photos
 
 function hashSeed(name: string): number {
   let h = 2166136261;

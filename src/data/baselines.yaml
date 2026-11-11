@@ -17,13 +17,13 @@
 - id: bare-flash_glass
   subject: glass
   kind: bare-flash
-  image: bare-flash_glass.jpg
+  image: speedlight_glass.jpg
   power: "1/32"
   distance: 18
 
 - id: bare-flash_apples
   subject: apples
   kind: bare-flash
-  image: bare-flash_apples.jpg
+  image: speedlight_apples.jpg
   power: "1/32"
   distance: 18

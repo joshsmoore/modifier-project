@@ -38,7 +38,7 @@ const setupImg = tryGetShotImage(shots.glass?.data.setupImage);
 const { Content } = await render(mod);
 
 const compareLink = (subject: 'glass' | 'apples') =>
-  u(`/compare?a=${mod.id}&b=bare-flash&s=${subject}&v=slider`);
+  u(`/compare?a=${mod.id}&b=speedlight&s=${subject}&v=slider`);
 ---
 
 <Base title={`${mod.data.name} — Modifier Project`}>
@@ -77,14 +77,14 @@ const compareLink = (subject: 'glass' | 'apples') =>
     <Content />
   </section>
 
-  {mod.id !== 'bare-flash' && (
+  {mod.id !== 'speedlight' && (
     <section style="margin-top: var(--s-5);">
       <h3 style="font-family: var(--font-mono); font-size: var(--step-small); letter-spacing: 0.08em; text-transform: uppercase; color: var(--fg-muted); margin-bottom: var(--s-3);">
         Compare with
       </h3>
       <ul style="list-style: none; padding: 0; margin: 0; display: flex; gap: var(--s-4); flex-wrap: wrap;">
-        <li><a href={compareLink('glass')}>↔ Bare flash (glass)</a></li>
-        <li><a href={compareLink('apples')}>↔ Bare flash (apples)</a></li>
+        <li><a href={compareLink('glass')}>↔ Speedlight (glass)</a></li>
+        <li><a href={compareLink('apples')}>↔ Speedlight (apples)</a></li>
         <li><a href={u(`/compare?a=${mod.id}`)}>Pick another</a></li>
       </ul>
     </section>

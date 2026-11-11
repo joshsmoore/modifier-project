@@ -9,7 +9,8 @@
     "prebuild": "tsx scripts/generate-placeholders.ts && tsx scripts/validate-dimensions.ts",
     "build": "astro build",
     "preview": "astro preview",
-    "check": "astro check"
+    "check": "astro check",
+    "instagram": "tsx scripts/generate-instagram.ts"
   },
   "dependencies": {
     "astro": "^5.0.0"

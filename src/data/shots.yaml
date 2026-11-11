@@ -6,44 +6,50 @@
   modifier: speedlight
   subject: glass
   image: speedlight_glass.jpg
-  power: "1/32"
-  distance: 18
+  iso: 64
+  power: "1/16"
+  distance: 46
   setupImage: speedlight_setup.jpg
   notes: Reference frame. All other shots are compared against this.
 - id: speedlight_apples
   modifier: speedlight
   subject: apples
   image: speedlight_apples.jpg
-  power: "1/32"
-  distance: 18
+  iso: 64
+  power: "1/16"
+  distance: 46
   setupImage: speedlight_setup.jpg
 
 - id: bulb_glass
   modifier: bulb
   subject: glass
   image: bulb_glass.jpg
-  power: "1/32"
-  distance: 18
+  iso: 64
+  power: "1/2"
+  distance: 46
   setupImage: bulb_setup.jpg
   notes: Fresnel removed; bare bulb exposed.
 - id: bulb_apples
   modifier: bulb
   subject: apples
   image: bulb_apples.jpg
-  power: "1/32"
-  distance: 18
+  iso: 64
+  power: "1/2"
+  distance: 46
   setupImage: bulb_setup.jpg
 
 - id: magsnoot-1_glass
   modifier: magsnoot-1
   subject: glass
   image: magsnoot-1_glass.jpg
+  iso: 64
   power: "1/16"
   distance: 18
 - id: magsnoot-1_apples
   modifier: magsnoot-1
   subject: apples
   image: magsnoot-1_apples.jpg
+  iso: 64
   power: "1/16"
   distance: 18
 
@@ -51,12 +57,14 @@
   modifier: magsnoot-2
   subject: glass
   image: magsnoot-2_glass.jpg
+  iso: 64
   power: "1/16 +0.3"
   distance: 18
 - id: magsnoot-2_apples
   modifier: magsnoot-2
   subject: apples
   image: magsnoot-2_apples.jpg
+  iso: 64
   power: "1/16 +0.3"
   distance: 18
 
@@ -64,12 +72,14 @@
   modifier: magsnoot-3
   subject: glass
   image: magsnoot-3_glass.jpg
+  iso: 64
   power: "1/16 +0.7"
   distance: 18
 - id: magsnoot-3_apples
   modifier: magsnoot-3
   subject: apples
   image: magsnoot-3_apples.jpg
+  iso: 64
   power: "1/16 +0.7"
   distance: 18
 
@@ -77,12 +87,14 @@
   modifier: magsnoot-4
   subject: glass
   image: magsnoot-4_glass.jpg
+  iso: 64
   power: "1/8"
   distance: 18
 - id: magsnoot-4_apples
   modifier: magsnoot-4
   subject: apples
   image: magsnoot-4_apples.jpg
+  iso: 64
   power: "1/8"
   distance: 18
 
@@ -90,12 +102,14 @@
   modifier: magsnoot-grid-1
   subject: glass
   image: magsnoot-grid-1_glass.jpg
+  iso: 64
   power: "1/8"
   distance: 18
 - id: magsnoot-grid-1_apples
   modifier: magsnoot-grid-1
   subject: apples
   image: magsnoot-grid-1_apples.jpg
+  iso: 64
   power: "1/8"
   distance: 18
 
@@ -103,12 +117,14 @@
   modifier: magsnoot-grid-2
   subject: glass
   image: magsnoot-grid-2_glass.jpg
+  iso: 64
   power: "1/8 +0.3"
   distance: 18
 - id: magsnoot-grid-2_apples
   modifier: magsnoot-grid-2
   subject: apples
   image: magsnoot-grid-2_apples.jpg
+  iso: 64
   power: "1/8 +0.3"
   distance: 18
 
@@ -116,12 +132,14 @@
   modifier: magsnoot-grid-3
   subject: glass
   image: magsnoot-grid-3_glass.jpg
+  iso: 64
   power: "1/8 +0.7"
   distance: 18
 - id: magsnoot-grid-3_apples
   modifier: magsnoot-grid-3
   subject: apples
   image: magsnoot-grid-3_apples.jpg
+  iso: 64
   power: "1/8 +0.7"
   distance: 18
 
@@ -129,12 +147,14 @@
   modifier: magsnoot-grid-4
   subject: glass
   image: magsnoot-grid-4_glass.jpg
+  iso: 64
   power: "1/4"
   distance: 18
 - id: magsnoot-grid-4_apples
   modifier: magsnoot-grid-4
   subject: apples
   image: magsnoot-grid-4_apples.jpg
+  iso: 64
   power: "1/4"
   distance: 18
 
@@ -142,6 +162,7 @@
   modifier: softbox-24-bare
   subject: glass
   image: softbox-24-bare_glass.jpg
+  iso: 64
   power: "1/16"
   distance: 18
   setupImage: softbox-24-bare_setup.jpg
@@ -149,6 +170,7 @@
   modifier: softbox-24-bare
   subject: apples
   image: softbox-24-bare_apples.jpg
+  iso: 64
   power: "1/16"
   distance: 18
   setupImage: softbox-24-bare_setup.jpg
@@ -157,12 +179,14 @@
   modifier: softbox-24-baffle
   subject: glass
   image: softbox-24-baffle_glass.jpg
+  iso: 64
   power: "1/16 +0.3"
   distance: 18
 - id: softbox-24-baffle_apples
   modifier: softbox-24-baffle
   subject: apples
   image: softbox-24-baffle_apples.jpg
+  iso: 64
   power: "1/16 +0.3"
   distance: 18
 
@@ -170,12 +194,14 @@
   modifier: softbox-24-diffusion
   subject: glass
   image: softbox-24-diffusion_glass.jpg
+  iso: 64
   power: "1/8"
   distance: 18
 - id: softbox-24-diffusion_apples
   modifier: softbox-24-diffusion
   subject: apples
   image: softbox-24-diffusion_apples.jpg
+  iso: 64
   power: "1/8"
   distance: 18
 
@@ -183,12 +209,14 @@
   modifier: softbox-24-diffusion-grid
   subject: glass
   image: softbox-24-diffusion-grid_glass.jpg
+  iso: 64
   power: "1/4"
   distance: 18
 - id: softbox-24-diffusion-grid_apples
   modifier: softbox-24-diffusion-grid
   subject: apples
   image: softbox-24-diffusion-grid_apples.jpg
+  iso: 64
   power: "1/4"
   distance: 18
 
@@ -196,6 +224,7 @@
   modifier: softbox-36-bare
   subject: glass
   image: softbox-36-bare_glass.jpg
+  iso: 64
   power: "1/16"
   distance: 18
   setupImage: softbox-36-bare_setup.jpg
@@ -203,6 +232,7 @@
   modifier: softbox-36-bare
   subject: apples
   image: softbox-36-bare_apples.jpg
+  iso: 64
   power: "1/16"
   distance: 18
   setupImage: softbox-36-bare_setup.jpg
@@ -211,12 +241,14 @@
   modifier: softbox-36-baffle
   subject: glass
   image: softbox-36-baffle_glass.jpg
+  iso: 64
   power: "1/16 +0.3"
   distance: 18
 - id: softbox-36-baffle_apples
   modifier: softbox-36-baffle
   subject: apples
   image: softbox-36-baffle_apples.jpg
+  iso: 64
   power: "1/16 +0.3"
   distance: 18
 
@@ -224,12 +256,14 @@
   modifier: softbox-36-diffusion
   subject: glass
   image: softbox-36-diffusion_glass.jpg
+  iso: 64
   power: "1/8"
   distance: 18
 - id: softbox-36-diffusion_apples
   modifier: softbox-36-diffusion
   subject: apples
   image: softbox-36-diffusion_apples.jpg
+  iso: 64
   power: "1/8"
   distance: 18
 
@@ -237,11 +271,13 @@
   modifier: softbox-36-diffusion-grid
   subject: glass
   image: softbox-36-diffusion-grid_glass.jpg
+  iso: 64
   power: "1/4"
   distance: 18
 - id: softbox-36-diffusion-grid_apples
   modifier: softbox-36-diffusion-grid
   subject: apples
   image: softbox-36-diffusion-grid_apples.jpg
+  iso: 64
   power: "1/4"
   distance: 18

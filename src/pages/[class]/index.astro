@@ -48,6 +48,7 @@ const sections = await Promise.all(
               alt={`${mod.data.name} — glass`}
               power={shots.glass.data.power}
               distance={shots.glass.data.distance}
+              iso={shots.glass.data.iso}
             />
           )}
           {shots.apples && (
@@ -56,6 +57,7 @@ const sections = await Promise.all(
               alt={`${mod.data.name} — apples`}
               power={shots.apples.data.power}
               distance={shots.apples.data.distance}
+              iso={shots.apples.data.iso}
             />
           )}
         </div>

@@ -7,6 +7,7 @@ type Props = {
   alt: string;
   power?: string;
   distance?: number;
+  iso?: number;
   modifierName?: string;
   showDownload?: boolean;
   sizes?: string;
@@ -17,6 +18,7 @@ const {
   alt,
   power,
   distance,
+  iso,
   modifierName,
   showDownload = true,
   sizes = '(min-width: 1024px) 560px, (min-width: 640px) 48vw, 100vw',
@@ -59,6 +61,12 @@ if (showDownload) {
       <>
         <dt>Distance</dt>
         <dd>{distance}"</dd>
+      </>
+    )}
+    {iso != null && (
+      <>
+        <dt>ISO</dt>
+        <dd>{iso}</dd>
       </>
     )}
     {fullHref && (

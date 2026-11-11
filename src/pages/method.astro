@@ -21,6 +21,7 @@ const rows = shots
       modifierSlug: s.data.modifier.id,
       groupSlug: meta?.groupSlug ?? '',
       subject: s.data.subject,
+      iso: s.data.iso,
       power: s.data.power,
       distance: s.data.distance,
       notes: s.data.notes ?? '',
@@ -72,6 +73,7 @@ const rows = shots
         <tr>
           <th data-key="modifier" aria-sort="ascending">Modifier</th>
           <th data-key="subject">Subject</th>
+          <th data-key="iso">ISO</th>
           <th data-key="power">Power</th>
           <th data-key="distance">Distance</th>
           <th data-key="notes">Notes</th>
@@ -82,6 +84,7 @@ const rows = shots
           <tr>
             <td><a href={u(`/${r.groupSlug}/${r.modifierSlug}`)} style="border: 0; color: var(--fg);">{r.modifier}</a></td>
             <td>{r.subject}</td>
+            <td>{r.iso}</td>
             <td>{r.power}</td>
             <td>{r.distance}"</td>
             <td>{r.notes}</td>

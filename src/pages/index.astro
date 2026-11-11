@@ -35,8 +35,15 @@ const heroImage = heroShot ? getShotImage(heroShot.data.image) : null;
       </nav>
     </div>
 
+    <p class="prose" style="font-size: var(--step-1); color: var(--fg); max-width: 56ch;">
+      The same two subjects — a martini glass with blue liquid, and three apples
+      — shot with every light modifier I own. The camera, light position, and
+      subject are locked. The front face of each modifier is placed at the same
+      distance. Exposure is matched on the subject. Only the modifier changes.
+    </p>
+
     {heroImage && (
-      <div style="margin-bottom: var(--s-5);">
+      <div style="margin: var(--s-5) 0;">
         <Image
           src={heroImage}
           alt="Bare flash reference: martini glass with blue liquid on black."
@@ -49,12 +56,6 @@ const heroImage = heroShot ? getShotImage(heroShot.data.image) : null;
       </div>
     )}
 
-    <p class="prose" style="font-size: var(--step-1); color: var(--fg); max-width: 56ch;">
-      The same two subjects — a martini glass with blue liquid, and three apples
-      — shot with every light modifier I own. The camera, light position, and
-      subject are locked. The front face of each modifier is placed at the same
-      distance. Exposure is matched on the subject. Only the modifier changes.
-    </p>
     <p class="prose" style="color: var(--fg-muted);">
       Browse by class below, or jump straight to the
       <a href={u('/compare')}>comparison view</a>.

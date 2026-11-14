@@ -191,6 +191,20 @@ kbd {
   font-family: var(--font-mono);
   font-size: var(--step-small);
 }
+.site-footer .container {
+  display: flex;
+  justify-content: space-between;
+  align-items: baseline;
+  gap: var(--s-3);
+  flex-wrap: wrap;
+}
+.site-footer a {
+  color: var(--fg-muted);
+  border: 0;
+}
+.site-footer a:hover {
+  color: var(--fg);
+}
 
 /* ------------------------------------------------------------------
    Caption blocks under images.

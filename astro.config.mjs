@@ -6,8 +6,8 @@ import { defineConfig } from 'astro/config';
 // For a user/org root site, use site: 'https://<user>.github.io' and base: '/'.
 // Update these before the first deploy.
 export default defineConfig({
-  site: 'https://joshsmoore.github.io',
-  base: '/modifier-project',
+  site: 'https://modifiers.lighting',
+  base: '/',
   trailingSlash: 'ignore',
   build: {
     assets: 'assets',

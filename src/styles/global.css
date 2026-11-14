@@ -334,17 +334,15 @@ kbd {
 }
 .config-block header {
   margin-bottom: var(--s-3);
-  display: flex;
-  justify-content: space-between;
-  align-items: baseline;
-  gap: var(--s-3);
-  flex-wrap: wrap;
+  max-width: 72ch;
 }
 .config-block header h2 {
   margin: 0;
   font-size: var(--step-2);
 }
 .config-block header .config-link {
+  display: block;
+  margin-top: var(--s-1);
   font-family: var(--font-mono);
   font-size: var(--step-small);
   color: var(--fg-muted);
@@ -357,7 +355,7 @@ kbd {
   display: grid;
   grid-template-columns: 1fr 1fr;
   gap: var(--s-2);
-  max-width: 50%;
+  max-width: 72ch;
 }
 @media (max-width: 720px) {
   .config-block .shots {
@@ -405,7 +403,7 @@ kbd {
   margin-bottom: var(--s-3);
 }
 .setup-shot figure {
-  max-width: 50%;
+  max-width: 72ch;
   margin: 0;
 }
 @media (max-width: 720px) {

@@ -335,14 +335,17 @@ kbd {
 .config-block header {
   margin-bottom: var(--s-3);
   max-width: 72ch;
+  display: flex;
+  justify-content: space-between;
+  align-items: baseline;
+  gap: var(--s-3);
+  flex-wrap: wrap;
 }
 .config-block header h2 {
   margin: 0;
   font-size: var(--step-2);
 }
 .config-block header .config-link {
-  display: block;
-  margin-top: var(--s-1);
   font-family: var(--font-mono);
   font-size: var(--step-small);
   color: var(--fg-muted);

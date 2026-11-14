@@ -1,17 +1,10 @@
 ---
 name: Bare flash
 class: bare
+description: "My raw bare bulb flash in its speedlight mostly unmodified. I shoot both its speedlight head and with the flash bulb head. I also shoot the speedlight with MagMod grid in single and double (2 stacked grids). The bulb created some nice shadows. I suspect this was due to reflection from the wall and ceiling given that I do not have the entire room blacked out. The grids do what is expected and deepen the shadows and focus the light. Note: When I added the modifiers I did not move the light back as this would affect the light I was comparing to."
 hero: bare_hero.jpg
-images:
-  - src: bare_01.jpg
-    caption: Fresnel panel in place — the "flat lens" configuration.
-  - src: bare_02.jpg
-    caption: Fresnel panel removed, exposing the bare bulb.
-  - src: bare_03.jpg
-    caption: Mounted on a stand, no modifier attached.
+images: []
 ---
 
-A speedlight is a small, on-camera-style flash head with its own battery and
-Fresnel panel. "Bare" here means nothing has been added to shape or diffuse
-the light — it's the closest reference the site has to the raw output of the
-flash itself, and it's what every other modifier is judged against.
+
+My (mostly) unmodified Godox AD 200 Pro (resold by adarama as Flashpoint eVOLV 200 Pro). I did modify with MagMod grid(s)

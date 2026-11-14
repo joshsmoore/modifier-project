@@ -28,7 +28,7 @@
   power: "1/2"
   distance: 46
   setupImage: bulb_setup.jpg
-  notes: Fresnel removed; bare bulb exposed.
+  notes: Used the bulb head instead of the fresnel.
 - id: bulb_apples
   modifier: bulb
   subject: apples
@@ -37,6 +37,40 @@
   power: "1/2"
   distance: 46
   setupImage: bulb_setup.jpg
+
+- id: grid_glass
+  modifier: grid
+  subject: glass
+  image: grid_glass.jpg
+  iso: 64
+  power: "1/8"
+  distance: 46
+  setupImage: grid_setup.jpg
+- id: grid_apples
+  modifier: grid
+  subject: apples
+  image: grid_apples.jpg
+  iso: 64
+  power: "1/8"
+  distance: 46
+  setupImage: grid_setup.jpg
+
+- id: double-grid_glass
+  modifier: double-grid
+  subject: glass
+  image: double-grid_glass.jpg
+  iso: 64
+  power: "1/4"
+  distance: 46
+  setupImage: double-grid_setup.jpg
+- id: double-grid_apples
+  modifier: double-grid
+  subject: apples
+  image: double-grid_apples.jpg
+  iso: 64
+  power: "1/4"
+  distance: 46
+  setupImage: double-grid_setup.jpg
 
 - id: magsnoot-1_glass
   modifier: magsnoot-1

@@ -4,9 +4,9 @@
   "private": true,
   "type": "module",
   "scripts": {
-    "predev": "tsx scripts/generate-placeholders.ts",
+    "predev": "tsx scripts/generate-placeholders.ts && tsx scripts/generate-hero-composite.ts",
     "dev": "astro dev",
-    "prebuild": "tsx scripts/generate-placeholders.ts && tsx scripts/validate-dimensions.ts",
+    "prebuild": "tsx scripts/generate-placeholders.ts && tsx scripts/validate-dimensions.ts && tsx scripts/generate-hero-composite.ts",
     "build": "astro build",
     "preview": "astro preview",
     "check": "astro check",

@@ -1,5 +1,6 @@
 import { getCollection, type CollectionEntry } from 'astro:content';
 import type { ModifierClass } from '~/content.config';
+import { getPublishedModifierIds } from '~/lib/published';
 
 export type ModifierEntry = CollectionEntry<'modifiers'>;
 
@@ -32,7 +33,11 @@ function titleFor(cls: ModifierClass, size?: string): string {
 }
 
 export async function getClassGroups(): Promise<ClassGroup[]> {
-  const modifiers = await getCollection('modifiers');
+  const [allModifiers, published] = await Promise.all([
+    getCollection('modifiers'),
+    getPublishedModifierIds(),
+  ]);
+  const modifiers = allModifiers.filter((m) => published.has(m.id));
   const groups = new Map<string, ClassGroup>();
 
   for (const mod of modifiers) {

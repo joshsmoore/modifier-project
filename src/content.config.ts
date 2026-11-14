@@ -55,6 +55,10 @@ const groups = defineCollection({
     name: z.string(),
     class: modifierClass,
     size: z.string().optional(),
+    // Your description of the shoot for this class. Shown under the class card
+    // on the home page and under the class heading on the class page. Falls
+    // back to "N configurations" when omitted.
+    description: z.string().optional(),
     hero: z.string().optional(),
     images: z
       .array(

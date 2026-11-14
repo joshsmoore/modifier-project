@@ -2,10 +2,13 @@
 import Base from '~/layouts/Base.astro';
 import { getCollection } from 'astro:content';
 import { getClassGroups } from '~/lib/classes';
+import { getPublishedModifierIds } from '~/lib/published';
 import { u } from '~/lib/url';
 
-const shots = await getCollection('shots');
-const groups = await getClassGroups();
+const [groups, published] = await Promise.all([getClassGroups(), getPublishedModifierIds()]);
+const shots = (await getCollection('shots')).filter((s) =>
+  published.has(s.data.modifier.id),
+);
 
 const modifierLabel = new Map<string, { label: string; groupSlug: string }>();
 for (const g of groups) {
@@ -43,15 +46,18 @@ const rows = shots
       from the subject (measured, not eyeballed). The shutter speed, aperture,
       and ISO are also fixed; flash power is adjusted so the lit area on the
       subject exposes the same. Ambient is killed — the no-flash frame proves it.
+      The only processing is whitebalancing done with a netreul grea card.
+      I am eyeballing the power and doing nothing post processing to balance it so there
+      is some variation but I keep it as close as possible.
     </p>
 
     <h2>Gear</h2>
     <ul>
-      <li>Camera: (your body)</li>
-      <li>Lens: (your lens)</li>
-      <li>Flash: (your speedlight)</li>
-      <li>Trigger: (your trigger)</li>
-      <li>Light stand, boom, sandbag</li>
+      <li>Camera: Nikon Z7-II</li>
+      <li>Lens: Tamron 35-150mm f/2-2.8 Di III VXD (locked to 35mm)</li>
+      <li>Flash: Godox AD 200 Pro</li>
+      <li>Trigger: GoDox XPro II</li>
+      <li>Light stand: standard</li>
       <li>Backdrop: black, non-reflective</li>
       <li>Modifiers: everything on this site</li>
     </ul>
@@ -59,9 +65,8 @@ const rows = shots
     <h2>Measurements</h2>
     <p>
       "Distance" is the distance from the modifier's <em>front face</em> to the
-      subject's front, not the flash head itself. "Power" is the fractional
-      output on the speedlight; <code>+0.3</code> means one third of a stop above
-      that setting, matching the speedlight's own increments.
+      dot on the table I center the subject on, not the flash head itself. "Power" is the fractional
+      output on the speedlight;
     </p>
   </section>
 

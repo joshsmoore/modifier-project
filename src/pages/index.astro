@@ -2,11 +2,15 @@
 import { Image, getImage } from 'astro:assets';
 import Base from '~/layouts/Base.astro';
 import { getClassGroups } from '~/lib/classes';
+import { getGroupContent } from '~/lib/groups';
 import { shotsForModifier } from '~/lib/shots';
-import { getShotImage } from '~/lib/images';
+import { getShotImage, tryGetShotImage } from '~/lib/images';
 import { u } from '~/lib/url';
 
 const groups = await getClassGroups();
+const groupDescriptions = await Promise.all(
+  groups.map(async (g) => (await getGroupContent(g.slug))?.data.description ?? null),
+);
 
 async function thumbFor(group: Awaited<ReturnType<typeof getClassGroups>>[number]) {
   // First modifier in the group, glass subject.
@@ -20,9 +24,12 @@ async function thumbFor(group: Awaited<ReturnType<typeof getClassGroups>>[number
 
 const groupThumbs = await Promise.all(groups.map(thumbFor));
 
-// Hero image: canonical speedlight on the glass.
+// Hero image: 2x2 composite generated at build time (predev/prebuild). Falls
+// back to the canonical speedlight glass shot if the composite isn't present.
 const heroShot = (await shotsForModifier('speedlight')).glass;
-const heroImage = heroShot ? getShotImage(heroShot.data.image) : null;
+const heroImage =
+  tryGetShotImage('_hero.jpg') ??
+  (heroShot ? getShotImage(heroShot.data.image) : null);
 ---
 
 <Base title="Modifier Project" description="Every lighting modifier I own, same subject, everything else held constant." hideHeader>
@@ -35,11 +42,15 @@ const heroImage = heroShot ? getShotImage(heroShot.data.image) : null;
       </nav>
     </div>
 
+
     <p class="prose" style="font-size: var(--step-1); color: var(--fg); max-width: 56ch;">
-      The same two subjects — a martini glass with blue liquid, and three apples
-      — shot with every light modifier I own. The camera, light position, and
-      subject are locked. The front face of each modifier is placed at the same
-      distance. Exposure is matched on the subject. Only the modifier changes.
+      As an amateur who enjoys collecting equipment, I have multiple light modifiers but not a good sense of how they actually shape the light that I use. So this project is to use all of them in all of their configurations on the same subjects with the same setup. This will allow me to see clearly what each modifier does and compare it to other modifiers at the same time.
+    </p>
+    <p class="prose" style="font-size: var(--step-1); color: var(--fg); max-width: 56ch;">
+      The same two subjects — a martini glass with blue liquid, and three apples — were shot with every light modifier I own. The camera, light position, and subject are locked. The front face of each modifier is placed at the same distance. Exposure is matched on the subject. Only the modifier changes.
+    </p>
+    <p class="prose" style="font-size: var(--step-1); color: var(--fg); max-width: 56ch;">
+      The goal is simple: to know what each of my modifiers produces so I can effectively use them in my shots.
     </p>
 
     {heroImage && (
@@ -63,8 +74,8 @@ const heroImage = heroShot ? getShotImage(heroShot.data.image) : null;
   </section>
 
   <section style="margin-top: var(--s-6);">
-    <h2 style="font-family: var(--font-mono); font-size: var(--step-small); letter-spacing: 0.08em; text-transform: uppercase; color: var(--fg-muted); margin-bottom: var(--s-4);">
-      Classes
+    <h2 style="font-family: var(--font-mono); font-size: var(--step-2); letter-spacing: 0.06em; text-transform: uppercase; color: var(--fg); margin-bottom: var(--s-4);">
+      Modifiers
     </h2>
     <ul class="class-grid">
       {groups.map((g, i) => (
@@ -83,7 +94,13 @@ const heroImage = heroShot ? getShotImage(heroShot.data.image) : null;
               )}
             </div>
             <h3>{g.title}</h3>
-            <div class="count">{g.modifiers.length} configuration{g.modifiers.length === 1 ? '' : 's'}</div>
+            {groupDescriptions[i] ? (
+              <p class="description">{groupDescriptions[i]}</p>
+            ) : (
+              <div class="count">
+                {g.modifiers.length} configuration{g.modifiers.length === 1 ? '' : 's'}
+              </div>
+            )}
           </a>
         </li>
       ))}

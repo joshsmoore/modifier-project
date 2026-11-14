@@ -9,6 +9,9 @@ dist
 # Generated Instagram crops — regenerate with `npm run instagram -- <slug>`.
 instagram/
 
+# Home-page hero composite — regenerated on every dev/build (predev/prebuild).
+src/assets/shots/_hero.jpg
+
 # Scaffolded grey placeholders are checked in so the site works on a fresh
 # clone. Overwrite them with real photos as you shoot — git will pick up the
 # change naturally. `npm run dev` regenerates any that are missing.

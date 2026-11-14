@@ -4,10 +4,13 @@ import { getCollection } from 'astro:content';
 import Base from '~/layouts/Base.astro';
 import { getClassGroups } from '~/lib/classes';
 import { getShotImage } from '~/lib/images';
+import { getPublishedModifierIds } from '~/lib/published';
 import { u } from '~/lib/url';
 
-const groups = await getClassGroups();
-const shots = await getCollection('shots');
+const [groups, published] = await Promise.all([getClassGroups(), getPublishedModifierIds()]);
+const shots = (await getCollection('shots')).filter((s) =>
+  published.has(s.data.modifier.id),
+);
 
 // Build { modifierId: { subject: processedImageUrl } } at build time.
 type Subject = 'glass' | 'apples';

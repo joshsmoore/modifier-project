@@ -408,6 +408,11 @@ kbd {
   max-width: 50%;
   margin: 0;
 }
+@media (max-width: 720px) {
+  .setup-shot figure {
+    max-width: 100%;
+  }
+}
 
 .prev-next {
   display: flex;

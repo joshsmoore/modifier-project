@@ -10,9 +10,9 @@
  *   2. Modifier class           — e.g. "bare" | "snoot"        → every modifier in that class
  *   3. Slug prefix              — e.g. "magsnoot" | "softbox-24" → every modifier whose slug starts with it
  *
- * Subject shots (glass, apples) are center-cropped 2:3 → 4:5.
- * Setup shots are rotated 90° (landscape → portrait) and then cropped
- * to 4:5. Setup files are deduped — one IG crop per unique setup photo.
+ * Subject shots (glass, apples) are center-cropped 2:3 → 4:5. Setup
+ * shots are intentionally excluded from IG — they live on the website
+ * for anyone studying the method; the carousel focuses on outcomes.
  *
  * Also emits a cover slide (<arg>_00_cover_ig.jpg) sized to sort first
  * in a carousel, and prints a copy-pasteable IG caption with the
@@ -460,13 +460,6 @@ async function main(): Promise<void> {
       const outFile = resolve(outDir, `${slug}_${row.subject}_ig.jpg`);
       await renderCrop(row.image, outFile, { title: mod.name, settings });
       console.log(`  ✓ ${slug}_${row.subject}_ig.jpg`);
-    }
-
-    const setups = new Set(shots.map((s) => s.setupImage).filter((v): v is string => !!v));
-    for (const setupFile of setups) {
-      const outFile = resolve(outDir, `${slug}_setup_ig.jpg`);
-      await renderCrop(setupFile, outFile, { title: mod.name, rotate: true });
-      console.log(`  ✓ ${slug}_setup_ig.jpg (rotated)`);
     }
   }
 
